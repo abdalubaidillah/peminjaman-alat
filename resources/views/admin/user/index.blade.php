@@ -52,7 +52,16 @@
                     @forelse($users as $user)
                         <tr class="hover:bg-gray-50 transition">
                             <td class="py-3 px-4 border-b font-medium text-gray-900">
-                                {{ $user->name }}
+                                <div class="flex items-center gap-3">
+                                    @if($user->foto_profile)
+                                        <img src="{{ asset($user->foto_profile) }}" alt="Foto profil {{ $user->name }}" class="h-10 w-10 rounded-full border border-gray-200 object-cover">
+                                    @else
+                                        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-sm font-bold text-white">
+                                            {{ strtoupper(substr($user->name, 0, 1)) }}
+                                        </div>
+                                    @endif
+                                    <span>{{ $user->name }}</span>
+                                </div>
                             </td>
 
                             <td class="py-3 px-4 border-b">

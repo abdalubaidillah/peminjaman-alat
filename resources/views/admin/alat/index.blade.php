@@ -69,20 +69,19 @@
                             {{ $alats->firstItem() + $loop->index }}
                         </td>
 
-                        <td class="py-3 px-4 border-b">
-                            @if($alat->gambar)
-                                <img src="{{ asset($alat->gambar) }}"
-                                     alt="{{ $alat->nama_alat }}"
-                                     class="w-12 h-12 object-cover rounded-lg border">
-                            @else
-                                <span class="text-xs text-gray-400 italic">
-                                    Tidak ada
-                                </span>
-                            @endif
-                        </td>
-
                         <td class="py-3 px-4 border-b font-medium text-gray-900">
-                            {{ $alat->nama_alat }}
+                            <div class="flex min-w-0 items-center gap-3">
+                                @if($alat->gambar)
+                                    <img src="{{ asset($alat->gambar) }}"
+                                         alt="{{ $alat->nama_alat }}"
+                                         class="h-12 w-12 shrink-0 rounded-lg border object-cover">
+                                @else
+                                    <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-dashed border-gray-300 text-center text-xs text-gray-400">
+                                        Tidak ada
+                                    </div>
+                                @endif
+                                <span class="break-words">{{ $alat->nama_alat }}</span>
+                            </div>
                         </td>
 
                         <td class="py-3 px-4 border-b">

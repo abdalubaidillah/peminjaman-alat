@@ -72,7 +72,12 @@ class PetugasController extends Controller
 
     public function formLaporan()
     {
-        return view('petugas.laporan.index');
+        $peminjamans = Peminjaman::with(['detailPinjam', 'pengembalian'])->get();
+        $rekapStatus = $peminjamans->groupBy('status')->map(fn ($items) => $items->count());
+        $totalAlat = $peminjamans->sum(fn ($peminjaman) => $peminjaman->detailPinjam->sum('jumlah'));
+        $totalDenda = $peminjamans->sum(fn ($peminjaman) => $peminjaman->pengembalian?->denda ?? 0);
+
+        return view('petugas.laporan.index', compact('peminjamans', 'rekapStatus', 'totalAlat', 'totalDenda'));
     }
 
     public function cetakLaporan(Request $request)

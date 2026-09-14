@@ -44,8 +44,18 @@
                     </details>
                 @endif
             </nav>
-            <div class="p-4 border-t border-gray-800 text-sm text-gray-400">
-                Logged in as: <span class="text-white font-semibold">{{ auth()->user()->name }}</span>
+            <div class="flex items-center gap-3 border-t border-gray-800 p-4 text-sm text-gray-400">
+                @if(auth()->user()->foto_profile)
+                    <img src="{{ asset(auth()->user()->foto_profile) }}" alt="Foto profil {{ auth()->user()->name }}" class="h-9 w-9 rounded-full border border-gray-600 object-cover">
+                @else
+                    <div class="flex h-9 w-9 items-center justify-center rounded-full bg-blue-500 text-sm font-bold text-white">
+                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                    </div>
+                @endif
+                <div class="min-w-0">
+                    <span class="block text-xs text-gray-500">Logged in as</span>
+                    <span class="block truncate font-semibold text-white">{{ auth()->user()->name }}</span>
+                </div>
             </div>
         </aside>
 
