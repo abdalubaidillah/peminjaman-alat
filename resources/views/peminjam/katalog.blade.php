@@ -38,7 +38,21 @@
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
 
-        <h3 class="mb-3">Katalog Alat Tersedia</h3>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
+            <h3 class="mb-0">Katalog Alat Tersedia</h3>
+            <form action="{{ route('peminjam.katalog') }}" method="GET" class="d-flex w-100 w-md-auto">
+                <input type="search"
+                       name="search"
+                       value="{{ $search }}"
+                       placeholder="Cari nama alat..."
+                       class="form-control"
+                       aria-label="Cari nama alat">
+                <button type="submit" class="btn btn-dark ms-2">Cari</button>
+                @if($search)
+                    <a href="{{ route('peminjam.katalog') }}" class="btn btn-outline-secondary ms-2">Reset</a>
+                @endif
+            </form>
+        </div>
 
         <form action="{{ route('peminjam.peminjaman.ajukan') }}" method="POST">
             @csrf
