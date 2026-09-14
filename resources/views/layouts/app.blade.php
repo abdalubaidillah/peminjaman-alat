@@ -21,7 +21,7 @@
                     <a href="{{ route('petugas.dashboard') }}" class="block rounded-lg px-4 py-2 transition {{ request()->routeIs('petugas.dashboard') ? 'bg-gray-800 text-white font-medium' : 'text-gray-400 hover:bg-gray-800 hover:text-white' }}">Dashboard</a>
                     <a href="{{ route('petugas.peminjaman.index') }}" class="block rounded-lg px-4 py-2 transition {{ request()->routeIs('petugas.peminjaman*') ? 'bg-gray-800 text-white font-medium' : 'text-gray-400 hover:bg-gray-800 hover:text-white' }}">Persetujuan Peminjaman</a>
                     <a href="{{ route('petugas.pengembalian.index') }}" class="block rounded-lg px-4 py-2 transition {{ request()->routeIs('petugas.pengembalian*') ? 'bg-gray-800 text-white font-medium' : 'text-gray-400 hover:bg-gray-800 hover:text-white' }}">Pemantauan Pengembalian</a>
-                    <a href="{{ route('petugas.laporan.cetak') }}" class="block rounded-lg px-4 py-2 text-gray-400 transition hover:bg-gray-800 hover:text-white">Cetak Laporan</a>
+                    <a href="{{ route('petugas.laporan.form') }}" class="block rounded-lg px-4 py-2 text-gray-400 transition hover:bg-gray-800 hover:text-white">Cetak Laporan</a>
                 @else
                     <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 rounded-lg bg-gray-800 text-white font-medium">Dashboard</a>
                     <a href="{{ route('admin.user.index') }}" class="block px-4 py-2 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">Kelola User</a>

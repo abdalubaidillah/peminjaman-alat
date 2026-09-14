@@ -70,31 +70,36 @@ class PetugasController extends Controller
         return view('petugas.pengembalian.index', compact('pengembalians', 'peminjamanAktif', 'search'));
     }
 
+    public function formLaporan()
+    {
+        return view('petugas.laporan.index');
+    }
+
     public function cetakLaporan(Request $request)
     {
         $status = $request->input('status');
-        $search = $request->input('search');
         $tanggalMulai = $request->input('tanggal_mulai');
         $tanggalSelesai = $request->input('tanggal_selesai');
 
         $peminjamans = Peminjaman::with(['user', 'detailPinjam.alat', 'pengembalian.petugas'])
             ->when($status, fn ($query) => $query->where('status', $status))
-            ->when($search, function ($query, $search) {
-                $query->whereHas('user', function ($query) use ($search) {
-                    $query->where('name', 'like', "%{$search}%");
-                });
-            })
             ->when($tanggalMulai, fn ($query) => $query->whereDate('tgl_pinjam', '>=', $tanggalMulai))
             ->when($tanggalSelesai, fn ($query) => $query->whereDate('tgl_pinjam', '<=', $tanggalSelesai))
             ->latest('tgl_pinjam')
             ->get();
 
+        $rekapStatus = $peminjamans->groupBy('status')->map(fn ($items) => $items->count());
+        $totalAlat = $peminjamans->sum(fn ($peminjaman) => $peminjaman->detailPinjam->sum('jumlah'));
+        $totalDenda = $peminjamans->sum(fn ($peminjaman) => $peminjaman->pengembalian?->denda ?? 0);
+
         $pdf = Pdf::loadView('petugas.laporan.pdf', compact(
             'peminjamans',
             'status',
-            'search',
             'tanggalMulai',
-            'tanggalSelesai'
+            'tanggalSelesai',
+            'rekapStatus',
+            'totalAlat',
+            'totalDenda'
         ))->setPaper('a4', 'landscape');
 
         return $pdf->download('laporan-peminjaman-' . now()->format('Y-m-d') . '.pdf');

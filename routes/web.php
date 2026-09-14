@@ -63,7 +63,8 @@ Route::middleware(['auth', 'role:petugas,admin'])->prefix('petugas')->name('petu
 
     Route::get('/pengembalian', [PetugasController::class, 'indexPengembalian'])->name('pengembalian.index');
     Route::post('/pengembalian/{id}', [PetugasController::class, 'prosesPengembalian'])->name('pengembalian.proses');
-    Route::get('/laporan/cetak', [PetugasController::class, 'cetakLaporan'])->name('laporan.cetak');
+    Route::get('/laporan/cetak', [PetugasController::class, 'formLaporan'])->name('laporan.form');
+    Route::post('/laporan/cetak', [PetugasController::class, 'cetakLaporan'])->name('laporan.cetak');
 });
 
 //peminjam

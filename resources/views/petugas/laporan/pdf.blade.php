@@ -10,12 +10,36 @@
         table { width: 100%; border-collapse: collapse; }
         th { background: #111827; color: white; text-align: left; }
         th, td { border: 1px solid #d1d5db; padding: 6px; vertical-align: top; }
+        .summary { margin: 12px 0 16px; }
+        .summary td { width: 25%; background: #f3f4f6; }
+        .summary strong { display: block; color: #111827; font-size: 14px; }
+        .summary span { color: #6b7280; }
+        .status-summary { margin: 0 0 12px; }
+        .status-summary th { background: #374151; }
         .muted { color: #6b7280; }
     </style>
 </head>
 <body>
     <h1>Laporan Peminjaman Alat</h1>
     <p>Dicetak {{ now()->format('d-m-Y H:i') }} oleh {{ auth()->user()->name }}</p>
+    <table class="summary">
+        <tr>
+            <td><strong>{{ $peminjamans->count() }}</strong><span>Total transaksi</span></td>
+            <td><strong>{{ $totalAlat }}</strong><span>Total unit alat</span></td>
+            <td><strong>Rp {{ number_format($totalDenda, 0, ',', '.') }}</strong><span>Total denda</span></td>
+            <td><strong>{{ $rekapStatus->count() }}</strong><span>Jumlah status</span></td>
+        </tr>
+    </table>
+    @if($rekapStatus->isNotEmpty())
+        <table class="status-summary">
+            <thead><tr><th colspan="2">Rekap berdasarkan status</th></tr></thead>
+            <tbody>
+                @foreach($rekapStatus as $statusNama => $jumlah)
+                    <tr><td>{{ ucfirst($statusNama) }}</td><td>{{ $jumlah }} transaksi</td></tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
     <table>
         <thead><tr><th>No</th><th>Peminjam</th><th>Tanggal Pinjam</th><th>Rencana Kembali</th><th>Alat</th><th>Status</th><th>Pengembalian</th><th>Denda</th></tr></thead>
         <tbody>
