@@ -10,9 +10,6 @@
             <h1 class="mt-1 text-2xl font-bold text-gray-900">Halo, {{ auth()->user()->name }}</h1>
             <p class="mt-1 text-sm text-gray-500">Kelola persetujuan dan pengembalian alat dari satu tempat.</p>
         </div>
-        <a href="{{ route('petugas.laporan.form') }}" class="inline-flex items-center justify-center rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-gray-700">
-            Cetak laporan
-        </a>
     </div>
 
     <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

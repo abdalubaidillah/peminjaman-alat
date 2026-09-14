@@ -15,7 +15,6 @@
         <div>
             <p class="text-sm text-gray-500">Pantau alat yang masih dipinjam dan catat pengembalian saat diterima.</p>
         </div>
-        <a href="{{ route('petugas.laporan.form') }}" class="rounded-lg bg-gray-900 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-gray-700">Cetak laporan</a>
     </div>
 
     <section class="mb-6 overflow-hidden rounded-xl border border-blue-200 bg-white shadow-sm">
