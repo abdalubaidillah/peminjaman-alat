@@ -124,13 +124,21 @@ class PeminjamController extends Controller
 
             DB::commit();
 
-            return redirect()->route('peminjam.riwayat')
-                ->with('success', 'Pengajuan peminjaman berhasil dikirim. Menunggu persetujuan petugas.');
+            return redirect()->route('peminjam.peminjaman.invoice', $peminjaman->id);
         } catch (\Exception $e) {
             DB::rollBack();
 
             return redirect()->back()->with('error', 'Gagal mengajukan peminjaman: ' . $e->getMessage());
         }
+    }
+
+    public function invoicePeminjaman($id)
+    {
+        $peminjaman = Peminjaman::with(['user', 'detailPinjam.alat'])
+            ->where('user_id', auth()->id())
+            ->findOrFail($id);
+
+        return view('peminjam.invoice', compact('peminjaman'));
     }
 
     // Melihat riwayat peminjaman user yang sedang login
