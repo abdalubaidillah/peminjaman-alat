@@ -38,6 +38,16 @@
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
 
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
             <h3 class="mb-0">Katalog Alat Tersedia</h3>
             <form action="{{ route('peminjam.katalog') }}" method="GET" class="d-flex w-100 w-md-auto">
@@ -95,9 +105,9 @@
 
                                     <td>
                                         <input type="number"
-                                               name="jumlah[]"
+                                               name="jumlah[{{ $alat->id }}]"
                                                class="form-control form-control-sm"
-                                               value="1"
+                                               value="{{ old('jumlah.' . $alat->id, 1) }}"
                                                min="1"
                                                max="{{ $alat->stok }}">
                                     </td>

@@ -67,7 +67,23 @@ class PetugasController extends Controller
             ->latest()
             ->get();
 
-        return view('petugas.pengembalian.index', compact('pengembalians', 'peminjamanAktif', 'search'));
+        $peminjamanMenungguPersetujuan = Peminjaman::with(['user', 'detailPinjam.alat'])
+            ->where('status', 'diajukan')
+            ->latest()
+            ->get();
+
+        $peminjamanMenungguVerifikasi = Peminjaman::with(['user', 'detailPinjam.alat'])
+            ->where('status', 'dikembalikan')
+            ->latest()
+            ->get();
+
+        return view('petugas.pengembalian.index', compact(
+            'pengembalians',
+            'peminjamanAktif',
+            'peminjamanMenungguPersetujuan',
+            'peminjamanMenungguVerifikasi',
+            'search'
+        ));
     }
 
     public function formLaporan()

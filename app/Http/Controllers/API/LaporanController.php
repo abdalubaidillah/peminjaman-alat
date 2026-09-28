@@ -11,13 +11,28 @@ use Illuminate\Support\Facades\Validator;
 
 class LaporanController extends Controller
 {
+    public function show(int $id): JsonResponse
+    {
+        $peminjaman = Peminjaman::with([
+            'user',
+            'detailPinjam.alat',
+            'pengembalian.petugas',
+        ])->findOrFail($id);
+
+        return PeminjamanResource::make($peminjaman)
+            ->additional([
+                'message' => 'Detail peminjaman berhasil diambil.',
+            ])
+            ->response();
+    }
+
     public function index(Request $request): JsonResponse
     {
         // 1. Validasi Input Parameter
         $validator = Validator::make($request->all(), [
             'start_date' => ['nullable', 'date', 'date_format:Y-m-d'],
             'end_date'   => ['nullable', 'date', 'date_format:Y-m-d', 'after_or_equal:start_date'],
-            'status'     => ['nullable', 'string', 'in:diajukan,dipinjam,dikembalikan,telat'],
+            'status'     => ['nullable', 'string', 'in:diajukan,dipinjam,dikembalikan,selesai,telat'],
             'per_page'   => ['nullable', 'integer', 'min:1', 'max:100'],
         ]);
 

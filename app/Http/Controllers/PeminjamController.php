@@ -73,7 +73,7 @@ class PeminjamController extends Controller
         // Gabungkan jika ada alat_id yang sama dipilih lebih dari sekali
         $items = [];
         foreach ($request->alat_id as $index => $alatId) {
-            $jumlah = (int) ($request->jumlah[$index] ?? 0);
+            $jumlah = (int) ($request->input("jumlah.{$alatId}") ?? 0);
             if ($jumlah < 1) {
                 continue;
             }

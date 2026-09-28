@@ -40,6 +40,6 @@ class Alat extends Model
     public function scopeTersedia(Builder $query): Builder
     {
         return $query->where('stok', '>', 0)
-                     ->where('status_kondisi', 'Baik');
+                     ->whereRaw("LOWER(TRIM(status_kondisi)) = 'baik'");
     }
 }

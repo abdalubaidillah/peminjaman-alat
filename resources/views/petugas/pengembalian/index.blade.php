@@ -17,6 +17,82 @@
         </div>
     </div>
 
+    <section class="mb-6 overflow-hidden rounded-xl border border-amber-200 bg-white shadow-sm">
+        <div class="border-b border-amber-100 bg-amber-50 px-5 py-4">
+            <h2 class="font-bold text-amber-950">Menunggu persetujuan</h2>
+            <p class="mt-1 text-xs text-amber-700">Pengajuan dari peminjam yang perlu diproses sebelum alat dapat dipinjam.</p>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+                <thead class="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
+                    <tr><th class="px-5 py-3">Peminjam</th><th class="px-5 py-3">Tanggal pengajuan</th><th class="px-5 py-3">Alat</th><th class="px-5 py-3">Aksi</th></tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 text-gray-700">
+                    @forelse($peminjamanMenungguPersetujuan as $item)
+                        <tr class="align-top">
+                            <td class="px-5 py-4 font-semibold text-gray-900">{{ $item->user->name ?? 'User Dihapus' }}</td>
+                            <td class="px-5 py-4">{{ $item->tgl_pinjam?->format('d-m-Y') ?? '-' }}</td>
+                            <td class="px-5 py-4">
+                                @foreach($item->detailPinjam as $detail)
+                                    <div>{{ $detail->alat->nama_alat ?? 'Alat Dihapus' }} <span class="text-xs text-gray-500">({{ $detail->jumlah }} pcs)</span></div>
+                                @endforeach
+                            </td>
+                            <td class="px-5 py-4">
+                                <a href="{{ route('petugas.peminjaman.index') }}" class="inline-block rounded-lg bg-amber-600 px-3 py-2 text-xs font-semibold text-white hover:bg-amber-700">Proses persetujuan</a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="4" class="px-5 py-8 text-center text-gray-500">Tidak ada pengajuan yang menunggu persetujuan.</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="mb-6 overflow-hidden rounded-xl border border-cyan-200 bg-white shadow-sm">
+        <div class="border-b border-cyan-100 bg-cyan-50 px-5 py-4">
+            <h2 class="font-bold text-cyan-950">Menunggu verifikasi pengembalian</h2>
+            <p class="mt-1 text-xs text-cyan-700">Peminjam sudah mengajukan pengembalian dan alat siap diperiksa.</p>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+                <thead class="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
+                    <tr><th class="px-5 py-3">Peminjam</th><th class="px-5 py-3">Tanggal pinjam</th><th class="px-5 py-3">Alat</th><th class="px-5 py-3">Aksi</th></tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 text-gray-700">
+                    @forelse($peminjamanMenungguVerifikasi as $item)
+                        <tr class="align-top">
+                            <td class="px-5 py-4 font-semibold text-gray-900">{{ $item->user->name ?? 'User Dihapus' }}</td>
+                            <td class="px-5 py-4">{{ $item->tgl_pinjam?->format('d-m-Y') ?? '-' }}</td>
+                            <td class="px-5 py-4">
+                                @foreach($item->detailPinjam as $detail)
+                                    <div>{{ $detail->alat->nama_alat ?? 'Alat Dihapus' }} <span class="text-xs text-gray-500">({{ $detail->jumlah }} pcs)</span></div>
+                                @endforeach
+                            </td>
+                            <td class="px-5 py-4">
+                                <details class="w-64">
+                                    <summary class="cursor-pointer rounded-lg bg-cyan-600 px-3 py-2 text-center text-xs font-semibold text-white hover:bg-cyan-700">Verifikasi pengembalian</summary>
+                                    <form action="{{ route('petugas.pengembalian.proses', $item->id) }}" method="POST" class="mt-3 space-y-2 rounded-lg border border-gray-200 bg-gray-50 p-3">
+                                        @csrf
+                                        <select name="kondisi_kembali" required class="w-full rounded border border-gray-300 px-2 py-2 text-xs">
+                                            <option value="Baik">Baik</option>
+                                            <option value="Rusak Ringan">Rusak Ringan</option>
+                                            <option value="Rusak Berat">Rusak Berat</option>
+                                        </select>
+                                        <input type="number" name="denda" min="0" value="0" placeholder="Denda" class="w-full rounded border border-gray-300 px-2 py-2 text-xs">
+                                        <button type="submit" onclick="return confirm('Verifikasi pengembalian ini?')" class="w-full rounded bg-emerald-600 px-3 py-2 text-xs font-semibold text-white hover:bg-emerald-700">Simpan verifikasi</button>
+                                    </form>
+                                </details>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="4" class="px-5 py-8 text-center text-gray-500">Tidak ada pengajuan pengembalian yang menunggu verifikasi.</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </section>
+
     <section class="mb-6 overflow-hidden rounded-xl border border-blue-200 bg-white shadow-sm">
         <div class="border-b border-blue-100 bg-blue-50 px-5 py-4">
             <h2 class="font-bold text-blue-950">Sedang dipinjam</h2>

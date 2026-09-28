@@ -94,7 +94,7 @@
 
                         <td class="py-3 px-4 border-b">
                             <span class="px-2 py-1 text-xs font-semibold rounded-full
-                                @if($alat->status_kondisi == 'baik')
+                                @if(strtolower($alat->status_kondisi) == 'baik')
                                     bg-emerald-100 text-emerald-800
                                 @else
                                     bg-amber-100 text-amber-800

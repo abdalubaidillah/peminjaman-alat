@@ -56,7 +56,7 @@ class AdminController extends Controller
             'nama_alat' => 'required|string|max:255',
             'kategori_id' => 'required|exists:kategori,id',
             'stok' => 'required|integer|min:0',
-            'status_kondisi' => 'required|string|max:100',
+            'status_kondisi' => 'required|in:Baik,Kurang Baik,Tidak Baik',
             'deskripsi' => 'nullable|string',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
@@ -95,7 +95,7 @@ class AdminController extends Controller
             'nama_alat' => 'required|string|max:255',
             'kategori_id' => 'required|exists:kategori,id',
             'stok' => 'required|integer|min:0',
-            'status_kondisi' => 'required|string|max:100',
+            'status_kondisi' => 'required|in:Baik,Kurang Baik,Tidak Baik',
             'deskripsi' => 'nullable|string',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);

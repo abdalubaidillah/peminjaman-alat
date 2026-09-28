@@ -73,12 +73,13 @@
                     Status Kondisi
                 </label>
 
-                <input type="text"
-                       name="status_kondisi"
-                       value="{{ old('status_kondisi', 'Baik') }}"
-                       required
-                       placeholder="Contoh: Baik / Rusak Ringan"
-                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select name="status_kondisi"
+                        required
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="Baik" @selected(old('status_kondisi', 'Baik') === 'Baik')>Baik</option>
+                    <option value="Kurang Baik" @selected(old('status_kondisi') === 'Kurang Baik')>Kurang Baik</option>
+                    <option value="Tidak Baik" @selected(old('status_kondisi') === 'Tidak Baik')>Tidak Baik</option>
+                </select>
 
                 @error('status_kondisi')
                     <span class="text-red-500 text-xs">{{ $message }}</span>
