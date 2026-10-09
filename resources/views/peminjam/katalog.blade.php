@@ -78,7 +78,16 @@
                         @forelse($alats as $alat)
                             <tr class="hover:bg-gray-50">
                                 <td class="px-5 py-3"><input type="checkbox" name="alat_id[]" value="{{ $alat->id }}" @checked(in_array($alat->id, old('alat_id', []))) class="h-4 w-4 rounded border-gray-300 text-emerald-700 focus:ring-emerald-600"></td>
-                                <td class="px-5 py-3 font-semibold text-gray-900">{{ $alat->nama_alat }}</td>
+                                <td class="px-5 py-3 font-semibold text-gray-900">
+                                    <div class="flex min-w-0 items-center gap-3">
+                                        @if($alat->gambar)
+                                            <img src="{{ asset($alat->gambar) }}" alt="{{ $alat->nama_alat }}" class="h-12 w-12 shrink-0 rounded-lg border border-gray-200 object-cover">
+                                        @else
+                                            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-dashed border-gray-300 text-center text-[10px] font-medium text-gray-400">Tidak ada</div>
+                                        @endif
+                                        <span class="break-words">{{ $alat->nama_alat }}</span>
+                                    </div>
+                                </td>
                                 <td class="px-5 py-3">{{ $alat->kategori->nama_kategori ?? '-' }}</td>
                                 <td class="px-5 py-3">{{ $alat->status_kondisi }}</td>
                                 <td class="px-5 py-3"><span class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-800">{{ $alat->stok }} tersedia</span></td>
