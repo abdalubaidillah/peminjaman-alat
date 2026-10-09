@@ -1,117 +1,46 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Riwayat Peminjaman - Peminjam</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --ink: #172033;
-            --muted: #718096;
-            --blue: #2563eb;
-            --soft-blue: #eff6ff;
-        }
+@extends('layouts.app')
 
-        body {
-            color: var(--ink);
-            background: #f5f7fb !important;
-        }
+@section('title', 'Riwayat Peminjaman - Panel Peminjam')
+@section('header-title', 'Riwayat Peminjaman')
 
-        .topbar {
-            background: linear-gradient(115deg, #172554, #2563eb) !important;
-            box-shadow: 0 8px 24px rgba(37, 99, 235, .18);
-        }
+@section('content')
+    @if(session('success'))
+        <div class="mb-5 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">{{ session('success') }}</div>
+    @endif
+    @if(session('error'))
+        <div class="mb-5 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">{{ session('error') }}</div>
+    @endif
 
-        .hero {
-            position: relative;
-            overflow: hidden;
-            border-radius: 1.25rem;
-            padding: 2rem;
-            color: white;
-            background: linear-gradient(120deg, #1d4ed8, #3b82f6 60%, #60a5fa);
-            box-shadow: 0 14px 30px rgba(37, 99, 235, .18);
-        }
+    @php
+        $jumlahDiajukan = $peminjamans->where('status', 'diajukan')->count();
+        $jumlahDipinjam = $peminjamans->where('status', 'dipinjam')->count();
+        $jumlahSelesai = $peminjamans->where('status', 'selesai')->count();
+    @endphp
 
-        .hero::after {
-            content: '';
-            position: absolute;
-            width: 220px;
-            height: 220px;
-            right: -70px;
-            top: -100px;
-            border: 28px solid rgba(255, 255, 255, .12);
-            border-radius: 50%;
-        }
-
-        .hero > * { position: relative; z-index: 1; }
-
-        .stat-card, .history-card {
-            border: 0;
-            border-radius: 1rem;
-            box-shadow: 0 8px 24px rgba(15, 23, 42, .06);
-        }
-
-        .stat-card { padding: 1.1rem 1.25rem; background: white; }
-        .stat-number { font-size: 1.7rem; font-weight: 800; }
-        .history-card { transition: transform .2s ease, box-shadow .2s ease; }
-        .history-card:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(15, 23, 42, .1); }
-        .filter-box { background: white; border: 1px solid #e5e7eb; border-radius: .85rem; padding: .55rem .75rem; }
-        .muted-label { color: var(--muted); font-size: .76rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
-    </style>
-</head>
-<body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark topbar mb-4">
-        <div class="container">
-            <a class="navbar-brand" href="{{ route('peminjam.katalog') }}">Panel Peminjam</a>
-            <div class="d-flex">
-                <a href="{{ route('peminjam.katalog') }}" class="btn btn-outline-light btn-sm me-2">Katalog Alat</a>
-                <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                    @csrf
-                    <button type="submit" class="btn btn-light btn-sm text-primary">Logout</button>
-                </form>
-            </div>
+    <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+            <p class="text-sm font-semibold uppercase tracking-wider text-emerald-700">Aktivitas Anda</p>
+            <h1 class="mt-1 text-2xl font-bold text-gray-900">Riwayat peminjaman</h1>
+            <p class="mt-1 text-sm text-gray-500">Pantau status pengajuan dan pengembalian alat.</p>
         </div>
-    </nav>
+        <a href="{{ route('peminjam.katalog') }}" class="rounded-md bg-gray-900 px-4 py-2 text-center text-sm font-semibold text-white hover:bg-gray-700">Cari alat</a>
+    </div>
 
-    <main class="container pb-5">
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-        @if(session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
+    <div class="mb-6 grid gap-4 sm:grid-cols-3">
+        <div class="rounded-lg border border-amber-200 bg-amber-50 p-5"><p class="text-sm font-medium text-amber-800">Menunggu persetujuan</p><p class="mt-2 text-3xl font-bold text-amber-950">{{ $jumlahDiajukan }}</p></div>
+        <div class="rounded-lg border border-blue-200 bg-blue-50 p-5"><p class="text-sm font-medium text-blue-800">Sedang dipinjam</p><p class="mt-2 text-3xl font-bold text-blue-950">{{ $jumlahDipinjam }}</p></div>
+        <div class="rounded-lg border border-emerald-200 bg-emerald-50 p-5"><p class="text-sm font-medium text-emerald-800">Selesai</p><p class="mt-2 text-3xl font-bold text-emerald-950">{{ $jumlahSelesai }}</p></div>
+    </div>
 
-        @php
-            $jumlahDiajukan = $peminjamans->where('status', 'diajukan')->count();
-            $jumlahDipinjam = $peminjamans->where('status', 'dipinjam')->count();
-            $jumlahSelesai = $peminjamans->where('status', 'selesai')->count();
-        @endphp
-
-        <section class="hero mb-4">
-            <div class="row align-items-center g-3">
-                <div class="col-md-8">
-                    <div class="small fw-semibold text-uppercase opacity-75 mb-2">Aktivitas Anda</div>
-                    <h1 class="h3 fw-bold mb-2">Riwayat Peminjaman</h1>
-                    <p class="mb-0 opacity-75">Pantau pengajuan, alat yang sedang digunakan, dan proses pengembalian.</p>
-                </div>
-                <div class="col-md-4 text-md-end">
-                    <a href="{{ route('peminjam.katalog') }}" class="btn btn-light fw-semibold">Cari alat baru</a>
-                </div>
+    <section class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+        <div class="flex flex-col gap-3 border-b border-gray-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <h2 class="font-bold text-gray-900">Daftar aktivitas</h2>
+                <p class="mt-1 text-xs text-gray-500">Peminjaman terbaru ditampilkan lebih dulu.</p>
             </div>
-        </section>
-
-        <div class="row g-3 mb-4">
-            <div class="col-md-4"><div class="stat-card"><div class="muted-label">Menunggu persetujuan</div><div class="stat-number text-warning">{{ $jumlahDiajukan }}</div></div></div>
-            <div class="col-md-4"><div class="stat-card"><div class="muted-label">Sedang dipinjam</div><div class="stat-number text-primary">{{ $jumlahDipinjam }}</div></div></div>
-            <div class="col-md-4"><div class="stat-card"><div class="muted-label">Selesai</div><div class="stat-number text-success">{{ $jumlahSelesai }}</div></div></div>
-        </div>
-
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
-            <div><h2 class="h5 fw-bold mb-1">Daftar aktivitas</h2><p class="text-muted mb-0 small">Urut dari peminjaman terbaru.</p></div>
-            <form action="{{ route('peminjam.riwayat') }}" method="GET" class="filter-box d-flex align-items-center gap-2">
-                <label for="status" class="small fw-semibold text-muted">Filter</label>
-                <select id="status" name="status" class="form-select form-select-sm border-0" onchange="this.form.submit()">
+            <form action="{{ route('peminjam.riwayat') }}" method="GET" class="flex items-center gap-2">
+                <label for="status" class="text-sm font-medium text-gray-600">Status</label>
+                <select id="status" name="status" onchange="this.form.submit()" class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-100">
                     <option value="">Semua status</option>
                     <option value="diajukan" @selected($status === 'diajukan')>Diajukan</option>
                     <option value="dipinjam" @selected($status === 'dipinjam')>Dipinjam</option>
@@ -122,55 +51,54 @@
             </form>
         </div>
 
-        @forelse($peminjamans as $peminjaman)
-            <section class="card history-card mb-3">
-                <div class="card-header bg-white border-0 pt-4 px-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
-                    <div>
-                        <strong>Peminjaman #{{ $peminjaman->id }}</strong>
-                        <span class="text-muted ms-md-2">{{ $peminjaman->tgl_pinjam?->format('d-m-Y') ?? '-' }}</span>
-                    </div>
-                    @php
-                        $statusClass = match ($peminjaman->status) {
-                            'diajukan' => 'bg-warning text-dark',
-                            'dipinjam' => 'bg-primary',
-                            'dikembalikan' => 'bg-info text-dark',
-                            'selesai' => 'bg-success',
-                            'telat' => 'bg-danger',
-                            default => 'bg-secondary',
-                        };
-                    @endphp
-                    <span class="badge {{ $statusClass }}">{{ ucfirst($peminjaman->status) }}</span>
-                </div>
-                <div class="card-body px-4 pb-4">
-                    <div class="row g-3">
-                        <div class="col-md-7">
-                            <h6 class="muted-label mb-3">Alat yang dipinjam</h6>
-                            <ul class="mb-0">
-                                @foreach($peminjaman->detailPinjam as $detail)
-                                    <li>{{ $detail->alat->nama_alat ?? 'Alat Dihapus' }} ({{ $detail->jumlah }} pcs)</li>
-                                @endforeach
-                            </ul>
+        <div class="divide-y divide-gray-100">
+            @forelse($peminjamans as $peminjaman)
+                @php
+                    $statusClass = match ($peminjaman->status) {
+                        'diajukan' => 'bg-amber-100 text-amber-800',
+                        'dipinjam' => 'bg-blue-100 text-blue-800',
+                        'dikembalikan' => 'bg-cyan-100 text-cyan-800',
+                        'selesai' => 'bg-emerald-100 text-emerald-800',
+                        'telat' => 'bg-rose-100 text-rose-800',
+                        default => 'bg-gray-100 text-gray-700',
+                    };
+                @endphp
+                <article class="p-5">
+                    <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <h3 class="font-bold text-gray-900">Peminjaman #{{ $peminjaman->id }}</h3>
+                                <span class="rounded-full px-2.5 py-1 text-xs font-semibold {{ $statusClass }}">{{ ucfirst($peminjaman->status) }}</span>
+                            </div>
+                            <p class="mt-1 text-sm text-gray-500">Diajukan {{ $peminjaman->tgl_pinjam?->format('d-m-Y') ?? '-' }} · Rencana kembali {{ $peminjaman->tgl_kembali_plan?->format('d-m-Y') ?? '-' }}</p>
                         </div>
-                        <div class="col-md-5">
-                            <h6 class="muted-label mb-2">Rencana kembali</h6>
-                            <p class="mb-2">{{ $peminjaman->tgl_kembali_plan?->format('d-m-Y') ?? '-' }}</p>
-                            @if($peminjaman->pengembalian)
-                                <small class="text-success">Dikembalikan pada {{ $peminjaman->pengembalian->tgl_kembali?->format('d-m-Y') ?? '-' }}</small>
-                            @elseif($peminjaman->status === 'dikembalikan')
-                                <small class="text-info">Menunggu verifikasi petugas.</small>
-                            @elseif($peminjaman->status === 'dipinjam')
-                                <form action="{{ route('peminjam.pengembalian.ajukan', $peminjaman->id) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="btn btn-outline-primary btn-sm" onclick="return confirm('Ajukan pengembalian alat ini?')">Ajukan pengembalian</button>
-                                </form>
-                            @endif
-                        </div>
+                        @if($peminjaman->pengembalian)
+                            <p class="text-sm font-medium text-emerald-700">Dikembalikan {{ $peminjaman->pengembalian->tgl_kembali?->format('d-m-Y') ?? '-' }}</p>
+                        @elseif($peminjaman->status === 'dikembalikan')
+                            <p class="text-sm font-medium text-cyan-700">Menunggu verifikasi petugas</p>
+                        @elseif($peminjaman->status === 'dipinjam')
+                            <form action="{{ route('peminjam.pengembalian.ajukan', $peminjaman->id) }}" method="POST" onsubmit="return confirm('Ajukan pengembalian alat ini?')">
+                                @csrf
+                                <button type="submit" class="rounded-md border border-emerald-700 px-3 py-2 text-sm font-semibold text-emerald-800 hover:bg-emerald-50">Ajukan pengembalian</button>
+                            </form>
+                        @endif
                     </div>
+                    <div class="mt-4 border-t border-gray-100 pt-3">
+                        <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">Alat yang dipinjam</p>
+                        <ul class="space-y-1 text-sm text-gray-700">
+                            @foreach($peminjaman->detailPinjam as $detail)
+                                <li>{{ $detail->alat->nama_alat ?? 'Alat Dihapus' }} <span class="text-gray-500">· {{ $detail->jumlah }} unit</span></li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </article>
+            @empty
+                <div class="px-5 py-12 text-center">
+                    <h3 class="font-semibold text-gray-900">Belum ada riwayat</h3>
+                    <p class="mt-1 text-sm text-gray-500">Pengajuan peminjaman Anda akan muncul di sini.</p>
+                    <a href="{{ route('peminjam.katalog') }}" class="mt-4 inline-flex rounded-md bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800">Jelajahi katalog</a>
                 </div>
-            </section>
-        @empty
-            <div class="alert alert-secondary">Belum ada riwayat peminjaman.</div>
-        @endforelse
-    </main>
-</body>
-</html>
+            @endforelse
+        </div>
+    </section>
+@endsection
