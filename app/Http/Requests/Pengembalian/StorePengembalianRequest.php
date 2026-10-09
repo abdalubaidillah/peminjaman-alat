@@ -23,7 +23,6 @@ class StorePengembalianRequest extends FormRequest
         return [
             'peminjaman_id' => ['required', 'integer', 'exists:peminjaman,id'],
             'kondisi_kembali' => ['required', 'string', 'max:255'],
-            'denda' => ['nullable', 'integer', 'min:0'],
         ];
     }
 }

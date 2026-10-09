@@ -73,7 +73,6 @@ class PengembalianController extends Controller
                 'peminjaman_id' => $peminjaman->id,
                 'tgl_kembali' => now(),
                 'kondisi_kembali' => $validated['kondisi_kembali'],
-                'denda' => $validated['denda'] ?? 0,
                 'petugas_id' => $request->user()->id,
             ]);
 

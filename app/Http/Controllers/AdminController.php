@@ -462,7 +462,6 @@ class AdminController extends Controller
                     'peminjaman_id' => $peminjaman->id,
                     'tgl_kembali' => now(),
                     'kondisi_kembali' => 'Baik',
-                    'denda' => 0,
                     'petugas_id' => auth()->id(),
                 ]);
             }

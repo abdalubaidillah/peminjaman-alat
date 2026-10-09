@@ -74,12 +74,15 @@
                                     <summary class="cursor-pointer rounded-lg bg-cyan-600 px-3 py-2 text-center text-xs font-semibold text-white hover:bg-cyan-700">Verifikasi pengembalian</summary>
                                     <form action="{{ route('petugas.pengembalian.proses', $item->id) }}" method="POST" class="mt-3 space-y-2 rounded-lg border border-gray-200 bg-gray-50 p-3">
                                         @csrf
+                                        @php $dendaOtomatis = \App\Models\Pengembalian::hitungDendaTerlambat($item->tgl_kembali_plan, now()); @endphp
                                         <select name="kondisi_kembali" required class="w-full rounded border border-gray-300 px-2 py-2 text-xs">
                                             <option value="Baik">Baik</option>
                                             <option value="Rusak Ringan">Rusak Ringan</option>
                                             <option value="Rusak Berat">Rusak Berat</option>
                                         </select>
-                                        <input type="number" name="denda" min="0" value="0" placeholder="Denda" class="w-full rounded border border-gray-300 px-2 py-2 text-xs">
+                                        <label class="block text-xs font-medium text-gray-600">Denda (otomatis, bisa diubah)</label>
+                                        <input type="number" name="denda" min="0" step="1" value="{{ old('denda', $dendaOtomatis) }}" required class="w-full rounded border border-gray-300 px-2 py-2 text-xs">
+                                        <p class="text-xs text-gray-500">Rp5.000 per hari keterlambatan.</p>
                                         <button type="submit" onclick="return confirm('Verifikasi pengembalian ini?')" class="w-full rounded bg-emerald-600 px-3 py-2 text-xs font-semibold text-white hover:bg-emerald-700">Simpan verifikasi</button>
                                     </form>
                                 </details>
@@ -118,12 +121,15 @@
                                     <summary class="cursor-pointer rounded-lg bg-blue-600 px-3 py-2 text-center text-xs font-semibold text-white hover:bg-blue-700">Catat pengembalian</summary>
                                     <form action="{{ route('petugas.pengembalian.proses', $item->id) }}" method="POST" class="mt-3 space-y-2 rounded-lg border border-gray-200 bg-gray-50 p-3">
                                         @csrf
+                                        @php $dendaOtomatis = \App\Models\Pengembalian::hitungDendaTerlambat($item->tgl_kembali_plan, now()); @endphp
                                         <select name="kondisi_kembali" required class="w-full rounded border border-gray-300 px-2 py-2 text-xs">
                                             <option value="Baik">Baik</option>
                                             <option value="Rusak Ringan">Rusak Ringan</option>
                                             <option value="Rusak Berat">Rusak Berat</option>
                                         </select>
-                                        <input type="number" name="denda" min="0" value="0" placeholder="Denda" class="w-full rounded border border-gray-300 px-2 py-2 text-xs">
+                                        <label class="block text-xs font-medium text-gray-600">Denda (otomatis, bisa diubah)</label>
+                                        <input type="number" name="denda" min="0" step="1" value="{{ old('denda', $dendaOtomatis) }}" required class="w-full rounded border border-gray-300 px-2 py-2 text-xs">
+                                        <p class="text-xs text-gray-500">Rp5.000 per hari keterlambatan.</p>
                                         <button type="submit" onclick="return confirm('Simpan data pengembalian ini?')" class="w-full rounded bg-emerald-600 px-3 py-2 text-xs font-semibold text-white hover:bg-emerald-700">Simpan</button>
                                     </form>
                                 </details>

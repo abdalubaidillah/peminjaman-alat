@@ -168,7 +168,7 @@ class PetugasController extends Controller
     {
         $request->validate([
             'kondisi_kembali' => 'required|string',
-            'denda' => 'nullable|integer',
+            'denda' => 'nullable|integer|min:0',
         ]);
 
         DB::beginTransaction();
@@ -180,7 +180,7 @@ class PetugasController extends Controller
                 'peminjaman_id' => $peminjaman->id,
                 'tgl_kembali' => now(),
                 'kondisi_kembali' => $request->kondisi_kembali,
-                'denda' => $request->denda ?? 0,
+                'denda' => $request->input('denda') === null ? null : (int) $request->input('denda'),
                 'petugas_id' => auth()->id(),
             ]);
 
