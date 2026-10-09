@@ -6,6 +6,13 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StorePengembalianRequest extends FormRequest
 {
+    protected function prepareForValidation(): void
+    {
+        if ($this->route('id') !== null) {
+            $this->merge(['peminjaman_id' => $this->route('id')]);
+        }
+    }
+
     public function authorize(): bool
     {
         return true;

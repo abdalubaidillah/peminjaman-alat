@@ -16,6 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
 
+        $middleware->prependToGroup('web', \App\Http\Middleware\PreventBackHistory::class);
+
         $middleware->alias([
             'role.admin'    => IsAdmin::class,
             'role.petugas'  => IsPetugas::class,

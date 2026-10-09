@@ -27,6 +27,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('users', UserController::class);
     Route::get('/peminjaman', [LaporanController::class, 'index']);
     Route::get('/peminjaman/{id}', [LaporanController::class, 'show']);
+    Route::get('/pengembalian', [PengembalianController::class, 'index']);
+    Route::get('/pengembalian/{id}', [PengembalianController::class, 'show']);
     Route::get('/log-aktivitas', [LogAktivitasController::class, 'index']); 
     });
 
@@ -35,8 +37,14 @@ Route::middleware('auth:sanctum')->group(function () {
          Route::get('/katalog', [AlatController::class, 'katalog']);
          Route::get('/laporan-peminjaman', [LaporanController::class, 'index']); 
          Route::get('/peminjaman/{id}', [LaporanController::class, 'show']);
-         Route::post('/pengembalian', [PengembalianController::class, 'store']);
          Route::post('/peminjaman/{id}/approve', [PeminjamanController::class, 'approve']);
+    });
+
+    Route::middleware('role:admin,petugas')->group(function () {
+        Route::post('/pengembalian', [PengembalianController::class, 'store']);
+        Route::post('/pengembalian/{id}', [PengembalianController::class, 'store']);
+        Route::put('/pengembalian/{id}', [PengembalianController::class, 'update']);
+        Route::delete('/pengembalian/{id}', [PengembalianController::class, 'destroy']);
     });
 
     Route::middleware('role.peminjam')->group(function () {
