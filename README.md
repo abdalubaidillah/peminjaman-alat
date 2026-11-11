@@ -21,6 +21,23 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
+## Menjalankan dengan Docker Compose
+
+Pastikan Docker dan Docker Compose sudah terpasang, lalu jalankan dari direktori proyek:
+
+```sh
+docker compose up --build
+```
+
+Aplikasi tersedia di `http://localhost:8000`. Untuk instalasi pertama, buat application key dan jalankan migrasi:
+
+```sh
+docker compose exec app php artisan key:generate
+docker compose exec app php artisan migrate
+```
+
+Compose menjalankan MySQL dengan volume persisten. Nilai database default ditujukan untuk pengembangan lokal; atur `COMPOSE_DB_NAME`, `COMPOSE_DB_USER`, `COMPOSE_DB_PASSWORD`, dan `COMPOSE_DB_ROOT_PASSWORD` sebelum menggunakannya di lingkungan lain.
+
 ## Learning Laravel
 
 Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.

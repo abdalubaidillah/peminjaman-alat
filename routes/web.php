@@ -5,8 +5,14 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\PeminjamController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 
-Route::get('/', [AuthController::class, 'showLoginForm']);
+Route::middleware('auth')->group(function () {
+    Route::get('/profil', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profil', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profil/foto', [ProfileController::class, 'uploadPhoto'])->name('profile.photo.upload');
+    Route::delete('/profil/foto', [ProfileController::class, 'deletePhoto'])->name('profile.photo.delete');
+});
 
 //admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -82,8 +88,11 @@ Route::middleware(['auth', 'role:peminjam'])->prefix('peminjam')->name('peminjam
 
 // Route Tamu (Belum Login)
 Route::middleware('guest')->group(function () {
+    Route::get('/', [AuthController::class, 'showLoginForm']);
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/register', [AuthController::class, 'register'])->name('register.store');
 });
 
 // Route Logout (Harus sudah login)

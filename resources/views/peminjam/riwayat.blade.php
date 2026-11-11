@@ -15,6 +15,7 @@
         $jumlahDiajukan = $peminjamans->where('status', 'diajukan')->count();
         $jumlahDipinjam = $peminjamans->where('status', 'dipinjam')->count();
         $jumlahSelesai = $peminjamans->where('status', 'selesai')->count();
+        $jumlahDitolak = $peminjamans->where('status', 'ditolak')->count();
     @endphp
 
     <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -26,10 +27,11 @@
         <a href="{{ route('peminjam.katalog') }}" class="rounded-md bg-gray-900 px-4 py-2 text-center text-sm font-semibold text-white hover:bg-gray-700">Cari alat</a>
     </div>
 
-    <div class="mb-6 grid gap-4 sm:grid-cols-3">
+    <div class="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <div class="rounded-lg border border-amber-200 bg-amber-50 p-5"><p class="text-sm font-medium text-amber-800">Menunggu persetujuan</p><p class="mt-2 text-3xl font-bold text-amber-950">{{ $jumlahDiajukan }}</p></div>
         <div class="rounded-lg border border-blue-200 bg-blue-50 p-5"><p class="text-sm font-medium text-blue-800">Sedang dipinjam</p><p class="mt-2 text-3xl font-bold text-blue-950">{{ $jumlahDipinjam }}</p></div>
         <div class="rounded-lg border border-emerald-200 bg-emerald-50 p-5"><p class="text-sm font-medium text-emerald-800">Selesai</p><p class="mt-2 text-3xl font-bold text-emerald-950">{{ $jumlahSelesai }}</p></div>
+        <div class="rounded-lg border border-rose-200 bg-rose-50 p-5"><p class="text-sm font-medium text-rose-800">Ditolak</p><p class="mt-2 text-3xl font-bold text-rose-950">{{ $jumlahDitolak }}</p></div>
     </div>
 
     <section class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
@@ -47,6 +49,7 @@
                     <option value="dikembalikan" @selected($status === 'dikembalikan')>Menunggu verifikasi</option>
                     <option value="selesai" @selected($status === 'selesai')>Selesai</option>
                     <option value="telat" @selected($status === 'telat')>Telat</option>
+                    <option value="ditolak" @selected($status === 'ditolak')>Ditolak</option>
                 </select>
             </form>
         </div>
@@ -60,6 +63,7 @@
                         'dikembalikan' => 'bg-cyan-100 text-cyan-800',
                         'selesai' => 'bg-emerald-100 text-emerald-800',
                         'telat' => 'bg-rose-100 text-rose-800',
+                        'ditolak' => 'bg-rose-100 text-rose-800',
                         default => 'bg-gray-100 text-gray-700',
                     };
                 @endphp
@@ -81,6 +85,8 @@
                                 @csrf
                                 <button type="submit" class="rounded-md border border-emerald-700 px-3 py-2 text-sm font-semibold text-emerald-800 hover:bg-emerald-50">Ajukan pengembalian</button>
                             </form>
+                        @elseif($peminjaman->status === 'ditolak')
+                            <p class="text-sm font-medium text-rose-700">Pengajuan ditolak oleh petugas.</p>
                         @endif
                     </div>
                     <div class="mt-4 border-t border-gray-100 pt-3">

@@ -17,6 +17,14 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
 
         $middleware->prependToGroup('web', \App\Http\Middleware\PreventBackHistory::class);
+        $middleware->redirectUsersTo(function (\Illuminate\Http\Request $request): string {
+            return match ($request->user()?->role) {
+                'admin' => route('admin.dashboard'),
+                'petugas' => route('petugas.dashboard'),
+                'peminjam' => route('peminjam.dashboard'),
+                default => route('profile.edit'),
+            };
+        });
 
         $middleware->alias([
             'role.admin'    => IsAdmin::class,

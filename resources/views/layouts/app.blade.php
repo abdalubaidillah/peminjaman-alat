@@ -48,7 +48,7 @@
                     </details>
                 @endif
             </nav>
-            <div class="flex items-center gap-3 border-t border-gray-800 p-4 text-sm text-gray-400">
+            <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 border-t border-gray-800 p-4 text-sm text-gray-400 transition hover:bg-gray-800 hover:text-white {{ request()->routeIs('profile.*') ? 'bg-gray-800 text-white' : '' }}">
                 @if(auth()->user()->foto_profile)
                     <img src="{{ asset(auth()->user()->foto_profile) }}" alt="Foto profil {{ auth()->user()->name }}" class="h-9 w-9 rounded-full border border-gray-600 object-cover">
                 @else
@@ -57,10 +57,10 @@
                     </div>
                 @endif
                 <div class="min-w-0">
-                    <span class="block text-xs text-gray-500">Logged in as</span>
+                    <span class="block text-xs text-gray-500">Profil saya</span>
                     <span class="block truncate font-semibold text-white">{{ auth()->user()->name }}</span>
                 </div>
-            </div>
+            </a>
         </aside>
 
         <!-- MAIN CONTENT CONTAINER -->
@@ -72,12 +72,17 @@
                     <div class="text-lg font-semibold text-gray-800">
                         @yield('header-title', 'Dashboard')
                     </div>
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="rounded-lg bg-red-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-600">
-                            Logout
-                        </button>
-                    </form>
+                    <div class="flex items-center gap-2">
+                        <a href="{{ route('profile.edit') }}" class="rounded-lg px-3 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 md:hidden">
+                            Profil
+                        </a>
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="rounded-lg bg-red-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-600">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
                 </div>
                 @if(auth()->user()->role === 'peminjam')
                     <nav class="mt-3 flex gap-2 overflow-x-auto border-t border-gray-100 pt-3 md:hidden">

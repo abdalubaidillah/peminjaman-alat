@@ -159,7 +159,7 @@ class PetugasController extends Controller
     public function tolakPeminjaman($id)
     {
         $peminjaman = Peminjaman::where('status', 'diajukan')->findOrFail($id);
-        $peminjaman->delete();
+        $peminjaman->update(['status' => 'ditolak']);
 
         return redirect()->back()->with('success', 'Pengajuan peminjaman ditolak.');
     }
