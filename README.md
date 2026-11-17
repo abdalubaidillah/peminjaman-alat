@@ -32,9 +32,12 @@ docker compose up --build
 Aplikasi tersedia di `http://localhost:8000`. Untuk instalasi pertama, buat application key dan jalankan migrasi:
 
 ```sh
-docker compose exec app php artisan key:generate
-docker compose exec app php artisan migrate
+docker compose exec app-laravel php artisan key:generate
+docker compose exec app-laravel php artisan migrate
+docker compose exec app-laravel php artisan storage:link
 ```
+
+Perintah `storage:link` menghubungkan file di `storage/app/public` agar dapat diakses melalui URL `/storage`. Jika `public/storage` sudah berupa folder biasa, cadangkan dan pindahkan isinya terlebih dahulu sebelum membuat symbolic link; jangan gunakan `--force` tanpa memastikan file lama aman.
 
 Compose menjalankan MySQL dengan volume persisten. Nilai database default ditujukan untuk pengembangan lokal; atur `COMPOSE_DB_NAME`, `COMPOSE_DB_USER`, `COMPOSE_DB_PASSWORD`, dan `COMPOSE_DB_ROOT_PASSWORD` sebelum menggunakannya di lingkungan lain.
 
